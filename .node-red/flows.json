@@ -1,0 +1,425 @@
+[
+    {
+        "id": "ae2bb4ac.795308",
+        "type": "firebase modify",
+        "z": "ed40b49a.4eee78",
+        "name": "Firebase Save Latest",
+        "firebaseconfig": "",
+        "childpath": "msg.childpath",
+        "method": "set",
+        "value": "msg.payload",
+        "priority": "msg.priority",
+        "x": 592.5,
+        "y": 241,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "aa691bac.527198",
+        "type": "mqtt in",
+        "z": "ed40b49a.4eee78",
+        "name": "Smoky data",
+        "topic": "smoky/1/#",
+        "qos": "1",
+        "broker": "d11b744b.bc4f38",
+        "x": 95.5,
+        "y": 188,
+        "wires": [
+            [
+                "d56617a5.79e518",
+                "f182cd7b.c965c"
+            ]
+        ]
+    },
+    {
+        "id": "d56617a5.79e518",
+        "type": "thingspeak42",
+        "z": "ed40b49a.4eee78",
+        "name": "ThingSpeak Smoky",
+        "delay": "30",
+        "topic1": "smoky/1/inside/temperature",
+        "topic2": "smoky/1/inside/humidity",
+        "topic3": "smoky/1/inside/heaterpercent",
+        "topic4": "smoky/1/inside/smoke",
+        "topic5": "weather/outTemp_C",
+        "topic6": "weather/outHumidity",
+        "topic7": "smoky/1/inside/heateroutput",
+        "topic8": "smoky/1/dhtreadfailures",
+        "endpoint": "https://thingspeak.com",
+        "x": 458.5,
+        "y": 314,
+        "wires": []
+    },
+    {
+        "id": "84c44ff5.42f45",
+        "type": "mqtt in",
+        "z": "ed40b49a.4eee78",
+        "name": "Smoky temp",
+        "topic": "smoky/1/inside/temperature",
+        "qos": "1",
+        "broker": "1183f03b.fae04",
+        "x": 111.5,
+        "y": 748,
+        "wires": [
+            [
+                "9a6c5dd8.47c67",
+                "18b193c9.4bae4c"
+            ]
+        ]
+    },
+    {
+        "id": "9a6c5dd8.47c67",
+        "type": "change",
+        "z": "ed40b49a.4eee78",
+        "name": "Clear msg",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 311.5,
+        "y": 748,
+        "wires": [
+            [
+                "b8c91a7.ba033e8"
+            ]
+        ]
+    },
+    {
+        "id": "2808a205.6667ce",
+        "type": "http request",
+        "z": "ed40b49a.4eee78",
+        "name": "Call Node-RED Heroku",
+        "method": "GET",
+        "ret": "txt",
+        "url": "https://node-red-otto.herokuapp.com/",
+        "tls": "",
+        "x": 578,
+        "y": 853,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "18b193c9.4bae4c",
+        "type": "delay",
+        "z": "ed40b49a.4eee78",
+        "name": "Keep alive",
+        "pauseType": "timed",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "4",
+        "rateUnits": "hour",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 141.5,
+        "y": 854,
+        "wires": [
+            [
+                "75585b3.9cc97a4"
+            ]
+        ]
+    },
+    {
+        "id": "75585b3.9cc97a4",
+        "type": "change",
+        "z": "ed40b49a.4eee78",
+        "name": "Clear msg",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 322,
+        "y": 852,
+        "wires": [
+            [
+                "2808a205.6667ce"
+            ]
+        ]
+    },
+    {
+        "id": "436dd270.785fec",
+        "type": "mqtt in",
+        "z": "ed40b49a.4eee78",
+        "name": "Weather station",
+        "topic": "weather/+",
+        "qos": "1",
+        "broker": "d11b744b.bc4f38",
+        "x": 103,
+        "y": 245,
+        "wires": [
+            [
+                "d56617a5.79e518",
+                "f182cd7b.c965c"
+            ]
+        ]
+    },
+    {
+        "id": "f182cd7b.c965c",
+        "type": "function",
+        "z": "ed40b49a.4eee78",
+        "name": "Build childpath",
+        "func": "msg.childpath = \"latest/\" + msg.topic\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 368.5,
+        "y": 217,
+        "wires": [
+            [
+                "ae2bb4ac.795308"
+            ]
+        ]
+    },
+    {
+        "id": "95ee839e.cf7e3",
+        "type": "debug",
+        "z": "ed40b49a.4eee78",
+        "name": "",
+        "active": false,
+        "console": "false",
+        "complete": "false",
+        "x": 352.5,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "42fc1e6a.6dff3",
+        "type": "mqtt in",
+        "z": "ed40b49a.4eee78",
+        "name": "Ballmer input",
+        "topic": "ballmerpeakdetector/bac",
+        "qos": "2",
+        "broker": "d11b744b.bc4f38",
+        "x": 99.5,
+        "y": 71,
+        "wires": [
+            [
+                "95ee839e.cf7e3",
+                "cb9c147.b4ef4e8",
+                "93958c4d.5c87"
+            ]
+        ]
+    },
+    {
+        "id": "cb9c147.b4ef4e8",
+        "type": "function",
+        "z": "ed40b49a.4eee78",
+        "name": "Determin peak",
+        "func": "\nif(msg.payload == 0){\n    msg.payload = \"\";\n} else if(msg.payload < 100){\n    msg.payload = \"Drink!\";\n} else if(msg.payload < 200) {\n    msg.payload = \"PEAK!\";\n} else {\n    msg.payload = \"Oh oh!\";\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 341.5,
+        "y": 124,
+        "wires": [
+            [
+                "f182cd7b.c965c"
+            ]
+        ]
+    },
+    {
+        "id": "93958c4d.5c87",
+        "type": "thingspeak42",
+        "z": "ed40b49a.4eee78",
+        "name": "ThingsPeak Ballmer",
+        "delay": "15",
+        "topic1": "ballmerpeakdetector/bac",
+        "topic2": "",
+        "topic3": "",
+        "topic4": "",
+        "topic5": "",
+        "topic6": "",
+        "topic7": "",
+        "topic8": "",
+        "endpoint": "https://thingspeak.com",
+        "x": 382.5,
+        "y": 26,
+        "wires": []
+    },
+    {
+        "id": "eddad531.604048",
+        "type": "mqtt in",
+        "z": "ed40b49a.4eee78",
+        "name": "Bamsebu",
+        "topic": "bamsebu/1/#",
+        "qos": "2",
+        "broker": "75dd7417.cd476c",
+        "x": 95.5,
+        "y": 423,
+        "wires": [
+            [
+                "50bc1d97.6eb464"
+            ]
+        ]
+    },
+    {
+        "id": "50bc1d97.6eb464",
+        "type": "debug",
+        "z": "ed40b49a.4eee78",
+        "name": "",
+        "active": true,
+        "console": "false",
+        "complete": "false",
+        "x": 328.5,
+        "y": 422,
+        "wires": []
+    },
+    {
+        "id": "d6e85da.8e645a",
+        "type": "inject",
+        "z": "ed40b49a.4eee78",
+        "name": "Inject alcohol",
+        "topic": "ballmerpeakdetector/bac",
+        "payload": "90",
+        "payloadType": "str",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 134.5,
+        "y": 658,
+        "wires": [
+            [
+                "b8c91a7.ba033e8"
+            ]
+        ]
+    },
+    {
+        "id": "b8c91a7.ba033e8",
+        "type": "mqtt out",
+        "z": "ed40b49a.4eee78",
+        "name": "MQTT 20",
+        "topic": "ballmerpeakdetector/bac",
+        "qos": "2",
+        "retain": "false",
+        "broker": "d11b744b.bc4f38",
+        "x": 501.5,
+        "y": 712,
+        "wires": []
+    },
+    {
+        "id": "7326b917.48ced8",
+        "type": "inject",
+        "z": "ed40b49a.4eee78",
+        "name": "Clear bamsebu",
+        "topic": "bamsebu/1/inside/pressure",
+        "payload": "",
+        "payloadType": "str",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 142.5,
+        "y": 554,
+        "wires": [
+            [
+                "a963f4bf.9ff238"
+            ]
+        ]
+    },
+    {
+        "id": "8521afe.74c175",
+        "type": "inject",
+        "z": "ed40b49a.4eee78",
+        "name": "Clear alcohol",
+        "topic": "ballballmerpeakdetector/bacer",
+        "payload": "",
+        "payloadType": "str",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 126.5,
+        "y": 622,
+        "wires": [
+            [
+                "b8c91a7.ba033e8"
+            ]
+        ]
+    },
+    {
+        "id": "a963f4bf.9ff238",
+        "type": "mqtt out",
+        "z": "ed40b49a.4eee78",
+        "name": "MQTT 13",
+        "topic": "",
+        "qos": "",
+        "retain": "",
+        "broker": "75dd7417.cd476c",
+        "x": 346.5,
+        "y": 558,
+        "wires": []
+    },
+    {
+        "id": "d11b744b.bc4f38",
+        "type": "mqtt-broker",
+        "z": "ed40b49a.4eee78",
+        "broker": "m20.cloudmqtt.com",
+        "port": "15555",
+        "clientid": "",
+        "usetls": false,
+        "compatmode": true,
+        "keepalive": "60",
+        "cleansession": true,
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": ""
+    },
+    {
+        "id": "1183f03b.fae04",
+        "type": "mqtt-broker",
+        "z": "b2757629.9a08f8",
+        "broker": "m20.cloudmqtt.com",
+        "port": "15555",
+        "clientid": "",
+        "usetls": false,
+        "compatmode": true,
+        "keepalive": "60",
+        "cleansession": true,
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": ""
+    },
+    {
+        "id": "75dd7417.cd476c",
+        "type": "mqtt-broker",
+        "z": "ed40b49a.4eee78",
+        "broker": "m13.cloudmqtt.com",
+        "port": "16948",
+        "clientid": "",
+        "usetls": false,
+        "compatmode": true,
+        "keepalive": "60",
+        "cleansession": true,
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": ""
+    }
+]
