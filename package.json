@@ -1,0 +1,20 @@
+{
+    "name": "node-red-project",
+    "description": "A Node-RED Project",
+    "version": "0.0.1",
+    "private": true,
+    "dependencies": {
+        "node-red-contrib-firebase": "~1.1.1",
+        "node-red-contrib-image-output": "~0.6.4",
+        "node-red-contrib-mqtt-auto": "~1.0.3",
+        "node-red-contrib-mqtt-env": "~1.0.0",
+        "node-red-contrib-opentimestamps": "~0.0.7",
+        "node-red-contrib-telegram-lists": "~0.0.6",
+        "node-red-contrib-telegrambot": "~15.1.9",
+        "node-red-dashboard": "~3.6.2",
+        "node-red-node-random": "~0.4.1",
+        "node-red-node-telegrambot": "~0.1.6",
+        "node-red-node-twilio": "~0.1.0",
+        "node-red-node-ui-webcam": "~0.4.0"
+    }
+}
